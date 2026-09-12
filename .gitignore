@@ -216,3 +216,16 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# SignalScope datasets
+data/
+
+# SignalScope trained model files
+model/*.pth
+
+# SignalScope generated evaluation images
+evaluation/*.png
+evaluation/*.jpg
+
+# Temporary inspection script
+model/inspect_tempo.txt
