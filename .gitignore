@@ -222,7 +222,7 @@ data/
 
 # SignalScope trained model files
 model/*.pth
-
+!model/signalscope_resnet18_v4b.pth
 # SignalScope generated evaluation images
 evaluation/*.png
 evaluation/*.jpg

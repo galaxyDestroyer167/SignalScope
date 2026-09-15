@@ -1,9 +1,7 @@
 from pathlib import Path
 
 import torch
-
 from torchvision import transforms
-
 from PIL import Image
 
 from model.model import load_model
@@ -13,13 +11,9 @@ from model.model import load_model
 # SignalScope Prediction
 # ============================================================
 
-PROJECT_DIR = Path(r"D:\SignalScope")
+PROJECT_DIR = Path(__file__).resolve().parent.parent
 
-MODEL_PATH = (
-    PROJECT_DIR
-    / "model"
-    / "signalscope_resnet18_v3.pth"
-)
+MODEL_PATH = PROJECT_DIR / "model" / "signalscope_resnet18_v4b.pth"
 
 IMAGE_SIZE = 224
 
@@ -50,6 +44,10 @@ transform = transforms.Compose([
 # Classes
 # ============================================================
 
+# V4-B training mapping:
+# 0 = AI
+# 1 = Real
+
 CLASS_NAMES = {
     0: "AI",
     1: "Real"
@@ -60,14 +58,16 @@ CLASS_NAMES = {
 # Load model
 # ============================================================
 
-print("Loading SignalScope model...")
+print("Loading SignalScope V4-B model...")
 
 model = load_model(
     MODEL_PATH,
     DEVICE
 )
 
-print("Model loaded successfully.")
+print(
+    f"Model loaded successfully on {DEVICE}."
+)
 
 
 # ============================================================
@@ -95,7 +95,6 @@ def predict_image(image_path):
         image
     ).unsqueeze(0).to(DEVICE)
 
-
     with torch.no_grad():
 
         output = model(
@@ -107,28 +106,26 @@ def predict_image(image_path):
             dim=1
         )[0]
 
-
     prediction = torch.argmax(
         probabilities
     ).item()
 
+    # V4-B mapping:
+    # probability[0] = AI
+    # probability[1] = Real
 
     ai_probability = (
-        probabilities[0].item()
-        * 100
+        probabilities[0].item() * 100
     )
 
     real_probability = (
-        probabilities[1].item()
-        * 100
+        probabilities[1].item() * 100
     )
-    
 
     confidence = (
         probabilities[prediction].item()
         * 100
     )
-
 
     return {
         "label": CLASS_NAMES[prediction],
@@ -144,7 +141,6 @@ def predict_image(image_path):
 
 if __name__ == "__main__":
 
-    # Automatically select one test image
     test_images = list(
         (
             PROJECT_DIR
@@ -161,12 +157,11 @@ if __name__ == "__main__":
             "No test images found."
         )
 
-
     image_path = test_images[0]
 
     print()
     print("=" * 60)
-    print("SignalScope Prediction Test")
+    print("SignalScope V4-B Prediction Test")
     print("=" * 60)
 
     print(

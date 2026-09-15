@@ -35,3 +35,48 @@ The external test set is kept separate from training and is used only to evaluat
 ```text
 [[86,  2],
  [13, 87]]
+
+## V4-B — Robustness Augmentation
+
+Model:
+- ResNet18
+- Fine-tuned layer3, layer4, and fc
+- Same V4-A dataset
+- Added JPEG compression augmentation
+- Added Gaussian blur augmentation
+- Added pixel noise
+- Stronger spatial/color augmentation
+- 15 epochs
+- CUDA / RTX 3050
+
+Best validation accuracy:
+- 92.33%
+
+Internal V4-A test:
+- Accuracy: 91.92%
+- Precision: 90.88%
+- Recall: 93.20%
+- Macro-F1: 91.92%
+- ROC-AUC: 0.9778
+- Confusion matrix: [[533, 55], [40, 548]]
+
+Unseen SD3 test:
+- Accuracy: 95.93%
+- Precision: 92.13%
+- Recall: 96.00%
+- Macro-F1: 95.47%
+- ROC-AUC: 0.9931
+- Confusion matrix: [[959, 41], [20, 480]]
+
+External 60-image test:
+- Accuracy: 80.00%
+- Precision: 95.24%
+- Recall: 80.00%
+- Macro-F1: 72.05%
+- ROC-AUC: 0.8440
+- Confusion matrix: [[8, 2], [10, 40]]
+
+Conclusion:
+V4-B improved external benchmark performance over V4-A while
+retaining strong internal and unseen-generator performance.
+V4-B is the current primary model candidate.

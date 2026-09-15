@@ -1,4 +1,4 @@
-import sys
+﻿import sys
 import tempfile
 from pathlib import Path
 
@@ -174,3 +174,4 @@ if uploaded_file is not None:
             "not definitive proof of whether an image "
             "is AI-generated."
         )
+
